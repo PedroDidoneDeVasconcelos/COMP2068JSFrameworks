@@ -1,0 +1,67 @@
+<h1>{{title}}</h1>
+<form method="POST">
+  <fieldset>
+    <label for="name" class="col-2">
+      Habit Name:
+    </label>
+    <input name="name" id="name" required value="{{habit.name}}" />
+  </fieldset>
+  
+  <fieldset>
+    <label for="frequency" class="col-2">
+      Frequency:
+    </label>
+    <select name="frequency" id="frequency" required>
+      {{createOptionElement "daily" habit.frequency}}
+      {{createOptionElement "weekly" habit.frequency}}
+      {{createOptionElement "monthly" habit.frequency}}
+    </select>
+  </fieldset>
+
+  <fieldset>
+    <label for="priority" class="col-2">
+      Priority:
+    </label>
+    <select name="priority" id="priority">
+      {{createOptionElement "Low" habit.priority}}
+      {{createOptionElement "Medium" habit.priority}}
+      {{createOptionElement "High" habit.priority}}
+    </select>
+  </fieldset>
+
+  <fieldset>
+    <label for="status" class="col-2">
+      Status:
+    </label>
+    <select name="status" id="status">
+      {{createOptionElement "Not Started" habit.status}}
+      {{createOptionElement "In Progress" habit.status}}
+      {{createOptionElement "Completed" habit.status}}
+    </select>
+  </fieldset>
+
+  <fieldset>
+    <label for="notes" class="col-2">
+      Notes:
+    </label>
+    <textarea name="notes" id="notes" rows="3">{{habit.notes}}</textarea>
+  </fieldset>
+
+  <button class="offset-3 btn btn-primary">
+    Save
+  </button>
+</form> 
+// Helper function to create option elements in Handlebars
+hbs.registerHelper('createOptionElement', function(value, selectedValue) {
+  return new hbs.SafeString(
+    `<option value="${value}" ${value === selectedValue ? 'selected' : ''}>${value}</option>`
+  );
+});
+<fieldset>
+  <label for="status">Status:</label>
+  <select name="status" id="status">
+    <option value="Not Started" {{isSelected habit.status "Not Started"}}>Not Started</option>
+    <option value="In Progress" {{isSelected habit.status "In Progress"}}>In Progress</option>
+    <option value="Completed" {{isSelected habit.status "Completed"}}>Completed</option>
+  </select>
+</fieldset>

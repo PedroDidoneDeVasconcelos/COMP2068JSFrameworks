@@ -1,0 +1,52 @@
+<h1>{{title}}</h1>
+<a href="/habits/add" class="btn btn-primary mb-3">Add a new habit</a>
+
+<table class="table table-striped">
+    <thead>
+        <th>Habit</th>
+        <th>Frequency</th>
+        <th>Start Date</th>
+        <th>Status</th>
+        <th>Priority</th>
+        <th>Actions</th>
+    </thead>
+    <tbody>
+        {{#each dataset}}
+        <tr>
+            <td>{{this.name}}</td>
+            <td>{{this.frequency}}</td>
+            <td>{{toShortDate this.startDate}}</td>
+            <td>{{this.status}}</td>
+            <td>{{this.priority}}</td>
+            <td>{{this.streak}} days</td>
+
+            <td>
+                <a href="/habits/edit/{{this._id}}" class="btn btn-primary btn-sm">Edit</a>
+                <a href="/habits/delete/{{this._id}}" 
+                   onclick="return confirmDeletion()" 
+                   class="btn btn-danger btn-sm">Delete</a>
+            </td>
+        </tr>
+        {{/each}}
+    </tbody>
+</table>
+<tbody>
+  {{#each dataset}}
+    <tr>
+      <td>{{this.name}}</td>
+      <td>{{this.frequency}}</td>
+      <td>{{toShortDate this.startDate}}</td>
+      <td>{{this.status}}</td>
+      <td>{{this.priority}}</td>
+      <td>{{this.streak}} days</td>
+      <td>
+        <a href="/habits/edit/{{this._id}}" class="btn btn-primary btn-sm">Edit</a>
+        <a href="/habits/delete/{{this._id}}" 
+           onclick="return confirmDeletion()" 
+           class="btn btn-danger btn-sm">Delete</a>
+      </td>
+    </tr>
+  {{/each}}
+</tbody>
+
+
