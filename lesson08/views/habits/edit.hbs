@@ -1,67 +1,59 @@
-<h1>{{title}}</h1>
-<form method="POST">
-  <fieldset>
-    <label for="name" class="col-2">
-      Habit Name:
-    </label>
-    <input name="name" id="name" required value="{{habit.name}}" />
-  </fieldset>
-  
-  <fieldset>
-    <label for="frequency" class="col-2">
-      Frequency:
-    </label>
-    <select name="frequency" id="frequency" required>
-      {{createOptionElement "daily" habit.frequency}}
-      {{createOptionElement "weekly" habit.frequency}}
-      {{createOptionElement "monthly" habit.frequency}}
-    </select>
-  </fieldset>
+<div class="container mt-4">
+  <div class="row justify-content-center">
+    <div class="col-md-8">
+      <div class="card shadow">
+        <div class="card-header bg-primary text-white">
+          <h1 class="h3 mb-0">{{title}}</h1>
+        </div>
+        <div class="card-body">
+          <form method="POST" class="needs-validation" novalidate>
+            <div class="mb-3">
+              <label for="name" class="form-label">Habit Name</label>
+              <input name="name" id="name" class="form-control" required value="{{habit.name}}" />
+              <div class="invalid-feedback">Please provide a habit name.</div>
+            </div>
+            
+            <div class="mb-3">
+              <label for="frequency" class="form-label">Frequency</label>
+              <select name="frequency" id="frequency" class="form-select" required>
+                {{createOptionElement "daily" habit.frequency}}
+                {{createOptionElement "weekly" habit.frequency}}
+                {{createOptionElement "monthly" habit.frequency}}
+              </select>
+            </div>
 
-  <fieldset>
-    <label for="priority" class="col-2">
-      Priority:
-    </label>
-    <select name="priority" id="priority">
-      {{createOptionElement "Low" habit.priority}}
-      {{createOptionElement "Medium" habit.priority}}
-      {{createOptionElement "High" habit.priority}}
-    </select>
-  </fieldset>
+            <div class="mb-3">
+              <label for="priority" class="form-label">Priority</label>
+              <select name="priority" id="priority" class="form-select">
+                {{createOptionElement "Low" habit.priority}}
+                {{createOptionElement "Medium" habit.priority}}
+                {{createOptionElement "High" habit.priority}}
+              </select>
+            </div>
 
-  <fieldset>
-    <label for="status" class="col-2">
-      Status:
-    </label>
-    <select name="status" id="status">
-      {{createOptionElement "Not Started" habit.status}}
-      {{createOptionElement "In Progress" habit.status}}
-      {{createOptionElement "Completed" habit.status}}
-    </select>
-  </fieldset>
+            <div class="mb-3">
+              <label for="status" class="form-label">Status</label>
+              <select name="status" id="status" class="form-select">
+                {{createOptionElement "Not Started" habit.status}}
+                {{createOptionElement "In Progress" habit.status}}
+                {{createOptionElement "Completed" habit.status}}
+              </select>
+            </div>
 
-  <fieldset>
-    <label for="notes" class="col-2">
-      Notes:
-    </label>
-    <textarea name="notes" id="notes" rows="3">{{habit.notes}}</textarea>
-  </fieldset>
+            <div class="mb-3">
+              <label for="notes" class="form-label">Notes</label>
+              <textarea name="notes" id="notes" class="form-control" rows="3">{{habit.notes}}</textarea>
+            </div>
 
-  <button class="offset-3 btn btn-primary">
-    Save
-  </button>
-</form> 
-// Helper function to create option elements in Handlebars
-hbs.registerHelper('createOptionElement', function(value, selectedValue) {
-  return new hbs.SafeString(
-    `<option value="${value}" ${value === selectedValue ? 'selected' : ''}>${value}</option>`
-  );
-});
-<fieldset>
-  <label for="status">Status:</label>
-  <select name="status" id="status">
-    <option value="Not Started" {{isSelected habit.status "Not Started"}}>Not Started</option>
-    <option value="In Progress" {{isSelected habit.status "In Progress"}}>In Progress</option>
-    <option value="Completed" {{isSelected habit.status "Completed"}}>Completed</option>
-  </select>
-</fieldset>
+            <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+              <a href="/habits" class="btn btn-outline-secondary me-2">Cancel</a>
+              <button type="submit" class="btn btn-primary">
+                <i class="fas fa-save"></i> Save Changes
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

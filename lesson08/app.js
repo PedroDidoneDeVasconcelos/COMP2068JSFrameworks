@@ -43,6 +43,13 @@ passport.use(User.createStrategy());
 // Set passport to write/read user data to/from session object
 passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
+// Register partials directory
+hbs.registerPartials(path.join(__dirname, 'views/partials'));
+// Make user available to all views
+app.use((req, res, next) => {
+  res.locals.user = req.user;
+  next();
+});
 // Routing Configuration
 app.use("/", indexRouter);
 app.use("/habits", habitsRouter);
@@ -82,6 +89,12 @@ hbs.registerHelper("createOptionElement", (currentValue, selectedValue) => {
 hbs.registerHelper('toShortDate', (longDateValue) => {
   return new hbs.SafeString(longDateValue.toLocaleDateString('en-CA'));
 });
+
+// add the new eq helper here
+hbs.registerHelper('eq', function(a, b) {
+  return a === b;
+});
+
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
   next(createError(404));

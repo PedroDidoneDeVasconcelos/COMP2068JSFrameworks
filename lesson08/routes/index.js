@@ -5,16 +5,19 @@ const passport = require("passport");
 
 /* GET home page. */
 router.get("/", function (req, res, next) {
-  res.render("index", { title: "Express" });
+  if (req.isAuthenticated()) {
+    return res.redirect('/habits');
+  }
+  res.render("index", { title: "Welcome to Habit Tracker" });
 });
+
 // GET /login
 router.get("/login", (req, res, next) => {
-  // res.render('login', { title: 'Login' });
-  // Obtain session messages if any
+  if (req.isAuthenticated()) {
+    return res.redirect('/habits');
+  }
   let messages = req.session.messages || [];
-  // Clear messages
   req.session.messages = [];
-  // Pass messages to view
   res.render("login", { title: "Login", messages: messages });
 });
 
@@ -23,7 +26,7 @@ router.get("/login", (req, res, next) => {
 router.post(
   "/login",
   passport.authenticate("local", {
-    successRedirect: "/projects",
+    successRedirect: "/habits",
     failureRedirect: "/login",
     failureMessage: "Invalid credentials",
   })
@@ -31,13 +34,21 @@ router.post(
 
 // GET /register
 router.get("/register", (req, res, next) => {
+  if (req.isAuthenticated()) {
+    return res.redirect('/habits');
+  }
   res.render("register", { title: "Create a new account" });
 });
 
 //POST /register
 router.post("/register", (req, res, next) => {
-  // Create a new user based on the information from the page
-  // three parameters: new user object, password, callback function
+  if (req.body.password !== req.body.confirm) {
+    return res.render('register', {
+      title: 'Create a new account',
+      error: 'Passwords do not match'
+    });
+  }
+
   User.register(
     new User({
       username: req.body.username,
@@ -46,16 +57,27 @@ router.post("/register", (req, res, next) => {
     (err, newUser) => {
       if (err) {
         console.log(err);
-        // take user back and reload register page
-        return res.redirect("/register");
-      } else {
-        // log user in and redirect
-        req.login(newUser, (err) => {
-          res.redirect("/projects");
+        return res.render('register', {
+          title: 'Create a new account',
+          error: 'Username already exists'
         });
       }
+      req.login(newUser, (err) => {
+        if (err) return next(err);
+        res.redirect("/habits");
+      });
     }
   );
+});
+
+// Add this route to your existing routes
+router.get('/logout', (req, res, next) => {
+  req.logout((err) => {
+    if (err) {
+      return next(err);
+    }
+    res.redirect('/login');
+  });
 });
 
 module.exports = router;
